@@ -12,6 +12,7 @@
     <string name="my_tapes">MY TAPES</string>
     <string name="title_activity_sounds">My Tapes</string>
     <string name="no_tapes">You have no tapes.</string>
+    <string name="no_play">Tape could not be played</string>
 
     <string name="hello_world">Hello world!</string>
 

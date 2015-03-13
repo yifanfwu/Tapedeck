@@ -2,11 +2,14 @@ package com.yifanfwu.soundrecorder4;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -14,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -21,6 +25,7 @@ import java.util.Arrays;
 public class SoundsActivity extends Activity {
 
     private File root;
+    public MediaPlayer mediaPlayer = new MediaPlayer();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,16 +40,33 @@ public class SoundsActivity extends Activity {
         }
 
         File[] fileList = root.listFiles();
-        String[] stringList = new String[fileList.length];
+        final String[] stringList = new String[fileList.length];
 
         for (int i = 0; i < fileList.length; i++) {
-            stringList[i] = fileList[i].toString();
+            stringList[i] = fileList[i].getName().toString();
         }
 
         ListView listView = (ListView) findViewById(R.id.listView);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.list_item, R.id.list_item, stringList);
 
         listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                try {
+                    mediaPlayer.reset();
+                    mediaPlayer.setDataSource(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "Tapedeck" + File.separator + stringList[position]);
+                    mediaPlayer.prepare();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(),R.string.no_play,Toast.LENGTH_SHORT).show();
+                }
+                mediaPlayer.start();
+            }
+        });
     }
 
 
@@ -69,4 +91,5 @@ public class SoundsActivity extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }
