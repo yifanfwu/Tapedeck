@@ -1,6 +1,7 @@
 package com.yifanfwu.soundrecorder4;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Environment;
@@ -31,7 +32,7 @@ public class MainActivity extends Activity {
         String directoryPath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "Tapedeck";
         File folder = new File(directoryPath);
 
-        if(!folder.exists()) {
+        if (!folder.exists()) {
             folder.mkdirs();
         }
 
@@ -82,6 +83,15 @@ public class MainActivity extends Activity {
                             + " saved", Toast.LENGTH_SHORT).show();
 
                 }
+            }
+        });
+
+        final Button mySounds = (Button) findViewById(R.id.button2);
+        mySounds.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), SoundsActivity.class);
+                startActivity(intent);
             }
         });
     }
